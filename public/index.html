@@ -61,22 +61,21 @@
   <script src="soccer/soccerLeagueList.js"></script>
 
 </head>
-<!-- SET THE CONTROLLER AND GET ALL TODOS WITH INITIALIZE FUNCTION -->
 
 <body ng-controller="MainCtrl as ctrl">
   <div class="container">
 
-    <div>
+    <div ng-show="data.length > 0">
+      <h3>Table</h3>
       <nvd3 options="options" data="data" api="api"></nvd3>
     </div>
 
-    <div>
-      <h1>FILTERS</h1>
+    <div ng-show="data.length > 0">
+      <h3>Filters</h3>
       <md-input-container class="md-block" flex-gt-sm>
         <label>Event name</label>
         <input ng-model="ctrl.eventNameFilter">
       </md-input-container>
-      <!-- <div>Bet status:</div> -->
       <md-list ng-cloak>
         <md-subheader class="md-no-sticky">Bet status</md-subheader>
         <md-list-item ng-repeat="bStatus in ctrl.betStatus">
@@ -88,7 +87,6 @@
           <md-checkbox class="md-secondary" ng-model="ctrl.finishedBetStatus" aria-label="TERMINE" ng-init="ctrl.finishedBetStatus = false" ng-change="ctrl.finishedBetStatusToggle(ctrl.finishedBetStatus)"></md-checkbox>
         </md-list-item>
       </md-list>
-
       <md-list ng-cloak>
         <md-subheader class="md-no-sticky">Bet sport</md-subheader>
         <md-list-item ng-repeat="bSport in ctrl.betSports">
@@ -96,7 +94,6 @@
           <md-checkbox class="md-secondary" ng-model="bSport.model"></md-checkbox>
         </md-list-item>
       </md-list>
-
       <md-list ng-cloak>
         <md-subheader class="md-no-sticky">Bet type</md-subheader>
         <md-list-item ng-repeat="bType in ctrl.betTypes">
@@ -104,7 +101,6 @@
           <md-checkbox class="md-secondary" ng-model="bType.model"></md-checkbox>
         </md-list-item>
       </md-list>
-
       <md-list ng-cloak>
         <md-subheader class="md-no-sticky">Bet technique</md-subheader>
         <md-list-item ng-repeat="bTechnique in ctrl.betTechniques">
@@ -112,21 +108,68 @@
           <md-checkbox class="md-secondary" ng-model="bTechnique.model"></md-checkbox>
         </md-list-item>
       </md-list>
-
     </div>
 
-    <div>NB total bets: {{ctrl.nbTotalBets}}</div>
-    <div>NB current bets: {{ctrl.nbCurrentBets}}</div>
-    <div>NB won bets: {{ctrl.nbWonBets}}</div>
-    <div>NB lost bets: {{ctrl.nbLostBets}}</div>
-    <div>Benefit: {{ctrl.benefit}} €</div>
-    <div>Total stake: {{ctrl.totalStake}} €</div>
-    <div>Average stake: {{ctrl.averageStake}} €</div>
-    <div>Current stake: {{ctrl.currentStake}} €</div>
-    <div>Average odds: {{ctrl.averageOdds}}</div>
-    <div>ROI: {{ctrl.roi}} %</div>
-    <div>Success: {{ctrl.successPercentage}} %</div>
-    <div>
+    <div ng-show="data.length > 0">
+      <h3>Statistics</h3>
+      <md-input-container flex="25">
+        <label>Nb total bets</label>
+        <input ng-model="ctrl.nbTotalBets" readonly>
+      </md-input-container>
+      <md-input-container flex="25">
+        <label>Nb current bets</label>
+        <input ng-model="ctrl.nbCurrentBets" readonly>
+      </md-input-container>
+      <md-input-container flex="25">
+        <label>Nb won bets</label>
+        <input ng-model="ctrl.nbWonBets" readonly>
+      </md-input-container>
+      <md-input-container flex="25">
+        <label>Nb lost bets</label>
+        <input ng-model="ctrl.nbLostBets" readonly>
+      </md-input-container>
+      <md-input-container flex="25">
+        <label>Benefit (€)</label>
+        <input ng-model="ctrl.benefit" readonly>
+      </md-input-container>
+      <md-input-container flex="25">
+        <label>Total stake (€)</label>
+        <input ng-model="ctrl.totalStake" readonly>
+      </md-input-container>
+      <md-input-container flex="25">
+        <label>Average stake (€)</label>
+        <input ng-model="ctrl.averageStake" readonly>
+      </md-input-container>
+      <md-input-container flex="25">
+        <label>Current stake (€)</label>
+        <input ng-model="ctrl.currentStake" readonly>
+      </md-input-container>
+      <md-input-container flex="25">
+        <label>Average odds</label>
+        <input ng-model="ctrl.averageOdds" readonly>
+      </md-input-container>
+      <md-input-container flex="25">
+        <label>ROI (%)</label>
+        <input ng-model="ctrl.roi" readonly>
+      </md-input-container>
+      <md-input-container flex="25">
+        <label>Success (%)</label>
+        <input ng-model="ctrl.successPercentage" readonly>
+      </md-input-container>
+      <!-- <div>NB total bets: {{ctrl.nbTotalBets}}</div>
+      <div>NB current bets: {{ctrl.nbCurrentBets}}</div>
+      <div>NB won bets: {{ctrl.nbWonBets}}</div>
+      <div>NB lost bets: {{ctrl.nbLostBets}}</div>
+      <div>Benefit: {{ctrl.benefit}} €</div>
+      <div>Total stake: {{ctrl.totalStake}} €</div>
+      <div>Average stake: {{ctrl.averageStake}} €</div>
+      <div>Current stake: {{ctrl.currentStake}} €</div>
+      <div>Average odds: {{ctrl.averageOdds}}</div>
+      <div>ROI: {{ctrl.roi}} %</div>
+      <div>Success: {{ctrl.successPercentage}} %</div> -->
+    </div>
+
+    <div ng-show="data.length > 0">
       <table ng-table="ctrl.tableParams" class="table" show-filter="true">
         <tr ng-repeat="row in $data" ng-class="{'lost': row.status.indexOf('PERDU') >= 0, 'cashout': row.status.indexOf('CASHOUT') >= 0, 'won': row.status.indexOf('GAGN') >=0}">
           <!--<td title="'Name'" filter="{ name: 'text'}" sortable="'name'">
@@ -179,43 +222,17 @@
       <md-progress-circular md-mode="indeterminate"></md-progress-circular>
     </div>
 
-    <div>Next technique bets TODO</div>
-    <div>From:
-      <div flex-gt-xs>
-        <!-- <h4>Standard date-picker</h4> -->
-        <md-datepicker ng-model="ctrl.nextTechniqueBetsToDoDateFilter" md-min-date="ctrl.nextTechniqueBetsToDoMinDateFilter" md-max-date="ctrl.nextTechniqueBetsToDoMaxDateFilter"></md-datepicker>
+    <div ng-show="data.length > 0">
+      <h3>Next technique bets TODO</h3>
+      <div>From:
+        <div flex-gt-xs>
+          <md-datepicker ng-model="ctrl.nextTechniqueBetsToDoDateFilter" md-min-date="ctrl.nextTechniqueBetsToDoMinDateFilter" md-max-date="ctrl.nextTechniqueBetsToDoMaxDateFilter"></md-datepicker>
+        </div>
       </div>
-      <!-- <input id="nextTechniqueBetsToDoDateFilter" ng-model="ctrl.nextTechniqueBetsToDoDateFilter" placeholder="yyyy-MM-dd" min="2018-01-01" max="2018-12-31" type="date" value="2018-12-19"> -->
+      <div>
+        <json-formatter json="ctrl.nextTechniqueBetsToDo" open="2"></json-formatter>
+      </div>
     </div>
-    <!-- <div>{{ctrl.nextTechniqueBetsToDoBeforeGroup}}</div> -->
-    <!-- <div>
-      <json-formatter json="ctrl.nextTechniqueBetsToDoGroup" open="3"></json-formatter>
-    </div> -->
-    <div>
-      <json-formatter json="ctrl.nextTechniqueBetsToDo" open="2"></json-formatter>
-    </div>
-
-    <!-- <div> -->
-    <!-- <label for="hockeyPredictions">Show hockey predictions:</label> -->
-    <!-- <input id="hockeyPredictions" type="checkbox" ng-model="ctrl.hockeyPredictions" /> -->
-    <!-- <md-switch id="hockeyPredictions" ng-model="ctrl.hockeyPredictions">
-        Show hockey predictions
-      </md-switch> -->
-    <!-- </div> -->
-    <!-- <div> -->
-    <!-- <label for="soccerPredictions">Show soccer predictions:</label> -->
-    <!-- <input id="soccerPredictions" type="checkbox" ng-model="ctrl.soccerPredictions" /> -->
-    <!-- <md-switch id="soccerPredictions" ng-model="ctrl.soccerPredictions">
-        Show soccer predictions
-      </md-switch> -->
-    <!-- </div> -->
-    <!-- <div> -->
-    <!-- <label for="basketBallPredictions">Show basketBall predictions:</label> -->
-    <!-- <input id="basketBallPredictions" type="checkbox" ng-model="ctrl.basketBallPredictions" /> -->
-    <!-- <md-switch id="basketBallPredictions" ng-model="ctrl.basketBallPredictions">
-        Show basketBall predictions
-      </md-switch> -->
-    <!-- </div> -->
 
     <div ng-cloak>
       <md-content>

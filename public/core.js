@@ -1,6 +1,6 @@
 (function(angular) {
   'use strict';
-  angular.module('betApp', ['nvd3', 'ngTable', 'jsonFormatter', 'angular.filter','ngMaterial', 'ngMessages'])
+  angular.module('betApp', ['nvd3', 'ngTable', 'jsonFormatter', 'angular.filter', 'ngMaterial', 'ngMessages'])
 
   angular.module("betApp").filter("filterEventName", filterEventName)
   angular.module("betApp").filter("filterBetDesc", filterBetDesc)
@@ -181,14 +181,7 @@
     }
 
     ctrl.currentSimpleBetsEventNames = []
-    ctrl.winamaxBets = []
     ctrl.winamaxBetsBeforeCum = []
-    /*
-        ctrl.getBets = function() {
-          let jsonData = require('./cache.json');
-
-          console.log(jsonData);
-        }*/
 
     ctrl.getBets = function() {
       ctrl.loading = true;
@@ -237,7 +230,6 @@
             }
           });
 
-          // ctrl.betStatus.push({model : false, label : 'TERMINE'})
           ctrl.calculateNextTechniquesBetsToDo()
 
           ctrl.tableParams = new NgTableParams({

@@ -38,10 +38,6 @@ const getWinamaxBets = async (browser) => {
     await page.waitFor(200)
   }*/
 
-
-
-
-
   let betsInPage = await getBetsInPage(page)
   console.log('page: ' + pageNumber)
   await page.waitFor(200)
