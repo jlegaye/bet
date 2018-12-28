@@ -1,0 +1,15 @@
+.won, .alreadyBet {
+  background-color: rgba(0, 255, 0, .5);
+}
+
+.lost, .notBetYet {
+  background-color: rgba(255, 0, 0, .5);
+}
+
+.cashout {
+  background-color: rgba(255, 50, 0, .5);
+}
+
+body {
+  height: auto;
+}

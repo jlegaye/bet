@@ -1,0 +1,26 @@
+<hr>
+<div>
+  <h1>HOCKEY</h1>
+  <h2>{{$ctrl.league.countryName}}</h2>
+  <div>UNDER<input type="text" ng-model="under_check" ng-init="under_check=$ctrl.league.under_check" ng-value="$ctrl.league.under_check"></input></div>
+  <div>ITERATION<input type="text" ng-model="iteration_check" ng-init="iteration_check=$ctrl.league.iteration_check" ng-value="$ctrl.league.iteration_check"></input></div>
+  <div>
+    <!-- <button ng-click="$ctrl.getHockeyPredictions('predictions', $ctrl.league.url, under_check, iteration_check)">GET PREDICTIONS</button> -->
+    <md-button class="md-raised md-primary" ng-click="$ctrl.getHockeyPredictions('predictions', $ctrl.league.url, under_check, iteration_check)">GET PREDICTIONS</md-button>
+  </div>
+  <div ng-show="!$ctrl.isLoading">
+    <div ng-show="$ctrl.predictions.events.length == 0">NO RESULT FOUND</div>
+    <ul>
+      <li ng-repeat="event in $ctrl.predictions.events" ng-class="{'notBetYet' : !event.alreadyBet, 'alreadyBet': event.alreadyBet}">
+        <h2>{{event.team}}</h2>
+        <br>
+        <span>totalGoals average: {{event.totalGoalsAverage}}</span>
+        <br>
+        <span>Date : {{event.nextEvent.date}}</span>
+        <br>
+        <span>{{event.nextEvent.home}} VS {{event.nextEvent.away}}</span>
+      </li>
+    </ul>
+  </div>
+  <div ng-show="$ctrl.isLoading"><md-progress-circular md-mode="indeterminate"></md-progress-circular></div>
+</div>

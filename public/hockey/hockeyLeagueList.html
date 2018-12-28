@@ -1,0 +1,130 @@
+<div>
+  <!-- <button ng-click="$ctrl.getAllHockeyPredictions($ctrl.hockeyPredictionsIteration)">GET ALL PREDICTIONS</button> -->
+  <md-button class="md-raised md-primary" ng-click="$ctrl.getAllHockeyPredictions($ctrl.hockeyPredictionsIteration)">GET ALL PREDICTIONS</md-button>
+  <md-input-container>
+    <label>ITERATIONS CHECK</label>
+    <input type="number" ng-model="$ctrl.hockeyPredictionsIteration">
+  </md-input-container>
+</div>
+<!-- <div>{{$ctrl.allHockeyPredictions}}</div> -->
+<!-- <div>{{ctrl.result}}</div> -->
+<!-- <hockey-league-detail ng-repeat="league in $ctrl.list" league="league"></hockey-league-detail> -->
+<div ng-show="$ctrl.isLoading">
+  <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+</div>
+<div ng-cloak>
+  <md-content>
+    <md-tabs md-dynamic-height md-border-bottom>
+      <md-tab label="By league">
+        <md-content class="md-padding">
+          <h1 class="md-display-2">By league</h1>
+          <div>
+            <h1>{{$ctrl.getAllAlreadyBetHockeyPredictionsCount()}} / {{$ctrl.getAllHockeyPredictionsCount()}}</h1>
+          </div>
+          <md-list flex>
+            <md-list-item class="md-3-line" ng-repeat="league in $ctrl.allHockeyPredictions" ng-click="null">
+              <div class="md-list-item-text" layout="column">
+                <h3>{{ league.league }}</h3>
+                <p ng-show="league.events.length == 0">NO RESULT FOUND</p>
+                <div ng-show="league.events.length > 0">
+                  <md-list-item class="md-3-line" ng-repeat="event in league.events" ng-class="{'notBetYet' : !event.alreadyBet, 'alreadyBet': event.alreadyBet}">
+                    <div class="md-list-item-text" layout="column">
+                      <br>
+                      <h2>{{event.team}}</h2>
+                      <p>totalGoals average: {{event.totalGoalsAverage}}</p>
+                      <p ng-show="event.lostStakes !== undefined"><b>lostStakes : {{event.lostStakes}}</b></p>
+                      <p>Date : {{event.nextEvent.date}}</p>
+                      <h3>{{event.nextEvent.home}} VS {{event.nextEvent.away}}</h3>
+                      <!-- <div class="md-list-item-text" layout="column"> -->
+                      <ul>
+                        <!-- <md-list-item class="md-3-line" ng-repeat="lastEvent in event.lastEvents"> -->
+                        <li ng-repeat="lastEvent in event.lastEvents">
+                          <p>{{lastEvent.date}} {{lastEvent.home}} VS {{lastEvent.away}} || {{lastEvent.score}}</p>
+                        </li>
+                        <!-- </md-list-item> -->
+                      </ul>
+                      <!-- </div> -->
+                    </div>
+                  </md-list-item>
+                </div>
+                <!-- <ul ng-show="league.events.length > 0">
+                  <li ng-repeat="event in league.events" ng-class="{'notBetYet' : !event.alreadyBet, 'alreadyBet': event.alreadyBet}">
+                    <h3>{{event.team}}</h3>
+                    <br>
+                    <span>totalGoals average: {{event.totalGoalsAverage}}</span>
+                    <br ng-show="event.lostStakes !== undefined">
+                    <span ng-show="event.lostStakes !== undefined"><b>lostStakes : {{event.lostStakes}}</b></span>
+                    <br>
+                    <span>Date : {{event.nextEvent.date}}</span>
+                    <br>
+                    <span>{{event.nextEvent.home}} VS {{event.nextEvent.away}}</span>
+                    <br>
+                    <ul>
+                      <li ng-repeat="lastEvent in event.lastEvents">
+                        <span>{{lastEvent.date}} {{lastEvent.home}} VS {{lastEvent.away}} || {{lastEvent.score}}</span>
+                      </li>
+                    </ul>
+                  </li>
+                </ul> -->
+              </div>
+            </md-list-item>
+          </md-list>
+          <!-- <ul>
+            <li ng-repeat="league in $ctrl.allHockeyPredictions">
+              <h2>{{league.league}}</h2>
+              <br>
+              <div ng-show="league.events.length == 0">NO RESULT FOUND</div>
+              <ul ng-show="league.events.length > 0">
+                <li ng-repeat="event in league.events" ng-class="{'notBetYet' : !event.alreadyBet, 'alreadyBet': event.alreadyBet}">
+                  <h3>{{event.team}}</h3>
+                  <br>
+                  <span>totalGoals average: {{event.totalGoalsAverage}}</span>
+                  <br ng-show="event.lostStakes !== undefined">
+                  <span ng-show="event.lostStakes !== undefined"><b>lostStakes : {{event.lostStakes}}</b></span>
+                  <br>
+                  <span>Date : {{event.nextEvent.date}}</span>
+                  <br>
+                  <span>{{event.nextEvent.home}} VS {{event.nextEvent.away}}</span>
+                  <br>
+                  <ul>
+                    <li ng-repeat="lastEvent in event.lastEvents">
+                      <span>{{lastEvent.date}} {{lastEvent.home}} VS {{lastEvent.away}} || {{lastEvent.score}}</span>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul> -->
+        </md-content>
+      </md-tab>
+      <md-tab label="By date">
+        <md-content class="md-padding">
+          <h1 class="md-display-2">By date</h1>
+          <div>
+            <h1>{{$ctrl.getAllAlreadyBetHockeyPredictionsCount()}} / {{$ctrl.getAllHockeyPredictionsCount()}}</h1>
+          </div>
+          <ul ng-repeat="(key, value) in $ctrl.allHockeyPredictions2 | groupBy: 'nextEvent.date'">
+            <h1>{{ key }}</h1>
+            <li ng-repeat="event in value" ng-class="{'notBetYet' : !event.alreadyBet, 'alreadyBet': event.alreadyBet}">
+              <h2>{{event.league}}</h2>
+              <br>
+              <h3>{{event.team}}</h3>
+              <br ng-show="event.lostStakes !== undefined">
+              <span ng-show="event.lostStakes !== undefined"><b>lostStakes : {{event.lostStakes}}</b></span>
+              <br>
+              <span>totalGoals average: {{event.totalGoalsAverage}}</span>
+              <br>
+              <span>{{event.nextEvent.home}} VS {{event.nextEvent.away}}</span>
+              <br>
+              <ul>
+                <li ng-repeat="lastEvent in event.lastEvents">
+                  <span>{{lastEvent.date}} {{lastEvent.home}} VS {{lastEvent.away}} || {{lastEvent.score}}</span>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </md-content>
+      </md-tab>
+    </md-tabs>
+  </md-content>
+</div>

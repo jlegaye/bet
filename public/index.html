@@ -1,0 +1,255 @@
+<!-- ASSIGN OUR ANGULAR MODULE -->
+<html ng-app="betApp">
+
+<head>
+  <!-- META -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
+
+  <title>BET APP</title>
+
+
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
+  <style>
+    html {
+      overflow-y: scroll;
+    }
+
+    body {
+      padding-top: 50px;
+    }
+
+    #todo-list {
+      margin-bottom: 30px;
+    }
+
+    #todo-form {
+      margin-bottom: 50px;
+    }
+  </style>
+
+  <link rel="stylesheet" href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.3/nv.d3.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/json-formatter/0.7.0/json-formatter.css" />
+
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-filter/0.5.17/angular-filter.js"></script><!-- load angular -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.3/nv.d3.min.js"></script>
+  <script src="https://rawgit.com/krispo/angular-nvd3/v1.0.7/dist/angular-nvd3.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-smart-table/2.1.8/smart-table.min.js"></script>
+  <script src="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/json-formatter/0.7.0/json-formatter.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>
+
+  <!-- Angular Material Library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
+  <script src="core.js"></script>
+  <script src="component.js"></script>
+  <script src="hockey/hockeyLeagueDetail.js"></script>
+  <script src="hockey/hockeyLeagueList.js"></script>
+  <script src="basketball/basketBallLeagueDetail.js"></script>
+  <script src="basketball/basketBallLeagueList.js"></script>
+  <script src="soccer/soccerLeagueDetail.js"></script>
+  <script src="soccer/soccerLeagueList.js"></script>
+
+</head>
+<!-- SET THE CONTROLLER AND GET ALL TODOS WITH INITIALIZE FUNCTION -->
+
+<body ng-controller="MainCtrl as ctrl">
+  <div class="container">
+
+    <div>
+      <nvd3 options="options" data="data" api="api"></nvd3>
+    </div>
+
+    <div>
+      <h1>FILTERS</h1>
+      <md-input-container class="md-block" flex-gt-sm>
+        <label>Event name</label>
+        <input ng-model="ctrl.eventNameFilter">
+      </md-input-container>
+      <!-- <div>Bet status:</div> -->
+      <md-list ng-cloak>
+        <md-subheader class="md-no-sticky">Bet status</md-subheader>
+        <md-list-item ng-repeat="bStatus in ctrl.betStatus">
+          <p> {{ bStatus.label }} </p>
+          <md-checkbox class="md-secondary" ng-model="bStatus.model"></md-checkbox>
+        </md-list-item>
+        <md-list-item>
+          <p>TERMINE</p>
+          <md-checkbox class="md-secondary" ng-model="ctrl.finishedBetStatus" aria-label="TERMINE" ng-init="ctrl.finishedBetStatus = false" ng-change="ctrl.finishedBetStatusToggle(ctrl.finishedBetStatus)"></md-checkbox>
+        </md-list-item>
+      </md-list>
+
+      <md-list ng-cloak>
+        <md-subheader class="md-no-sticky">Bet sport</md-subheader>
+        <md-list-item ng-repeat="bSport in ctrl.betSports">
+          <p> {{ bSport.label }} </p>
+          <md-checkbox class="md-secondary" ng-model="bSport.model"></md-checkbox>
+        </md-list-item>
+      </md-list>
+
+      <md-list ng-cloak>
+        <md-subheader class="md-no-sticky">Bet type</md-subheader>
+        <md-list-item ng-repeat="bType in ctrl.betTypes">
+          <p> {{ bType.label }} </p>
+          <md-checkbox class="md-secondary" ng-model="bType.model"></md-checkbox>
+        </md-list-item>
+      </md-list>
+
+      <md-list ng-cloak>
+        <md-subheader class="md-no-sticky">Bet technique</md-subheader>
+        <md-list-item ng-repeat="bTechnique in ctrl.betTechniques">
+          <p> {{ bTechnique.label }} </p>
+          <md-checkbox class="md-secondary" ng-model="bTechnique.model"></md-checkbox>
+        </md-list-item>
+      </md-list>
+
+    </div>
+
+    <div>NB total bets: {{ctrl.nbTotalBets}}</div>
+    <div>NB current bets: {{ctrl.nbCurrentBets}}</div>
+    <div>NB won bets: {{ctrl.nbWonBets}}</div>
+    <div>NB lost bets: {{ctrl.nbLostBets}}</div>
+    <div>Benefit: {{ctrl.benefit}} €</div>
+    <div>Total stake: {{ctrl.totalStake}} €</div>
+    <div>Average stake: {{ctrl.averageStake}} €</div>
+    <div>Current stake: {{ctrl.currentStake}} €</div>
+    <div>Average odds: {{ctrl.averageOdds}}</div>
+    <div>ROI: {{ctrl.roi}} %</div>
+    <div>Success: {{ctrl.successPercentage}} %</div>
+    <div>
+      <table ng-table="ctrl.tableParams" class="table" show-filter="true">
+        <tr ng-repeat="row in $data" ng-class="{'lost': row.status.indexOf('PERDU') >= 0, 'cashout': row.status.indexOf('CASHOUT') >= 0, 'won': row.status.indexOf('GAGN') >=0}">
+          <!--<td title="'Name'" filter="{ name: 'text'}" sortable="'name'">
+            {{user.name}}</td>
+          <td title="'Age'" filter="{ age: 'number'}" sortable="'age'">
+            {{user.age}}</td>-->
+          <td title="'ID'" sortable="'id'">{{row.id}}</td>
+          <td title="'Type'" sortable="'type'">{{row.type}}</td>
+          <td title="'Status'" sortable="'status'">{{row.status}}</td>
+          <td title="'Date'" sortable="'betTime'">{{row.betTime | date:"medium"}}</td>
+          <td title="'Mise'" sortable="'mise'">{{row.mise}}</td>
+          <td title="'Odds'" sortable="'odds'">{{row.odds}}</td>
+          <td title="'Result'" sortable="'result'">{{row.result}}</td>
+          <td title="'Sport'">
+            <div ng-repeat="event in row.events">{{event.sport}}</div>
+          </td>
+          <td title="'Event name'">
+            <div ng-repeat="event in row.events">{{event.eventName}}</div>
+          </td>
+          <td title="'Event result'">
+            <div ng-repeat="event in row.events">{{event.eventResult}}</div>
+          </td>
+          <td title="'Event time'">
+            <div ng-repeat="event in row.events">{{event.eventTime | date:"medium"}}</div>
+          </td>
+          <td title="'Event home'">
+            <div ng-repeat="event in row.events">{{event.eventHome}}</div>
+          </td>
+          <td title="'Event away'">
+            <div ng-repeat="event in row.events">{{event.eventAway}}</div>
+          </td>
+          <td title="'Bet desc'">
+            <div ng-repeat="event in row.events">{{event.betDesc}}</div>
+          </td>
+          <td title="'Bet technique'">
+            <div ng-repeat="event in row.events">{{event.betTechnique}}</div>
+          </td>
+          <td title="'Bet odds'">
+            <div ng-repeat="event in row.events">{{event.betOdds}}</div>
+          </td>
+          <td title="'CumRes'" sortable="'cumRes'">{{row.cumRes}}</td>
+        </tr>
+      </table>
+    </div>
+    <div>
+      <!-- <button class="md-raised" ng-click="ctrl.getBets()">GET BETS</button> -->
+      <md-button class="md-raised md-primary" ng-click="ctrl.getBets()">GET BETS</md-button>
+    </div>
+    <div ng-show="ctrl.loading">
+      <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+    </div>
+
+    <div>Next technique bets TODO</div>
+    <div>From:
+      <div flex-gt-xs>
+        <!-- <h4>Standard date-picker</h4> -->
+        <md-datepicker ng-model="ctrl.nextTechniqueBetsToDoDateFilter" md-min-date="ctrl.nextTechniqueBetsToDoMinDateFilter" md-max-date="ctrl.nextTechniqueBetsToDoMaxDateFilter"></md-datepicker>
+      </div>
+      <!-- <input id="nextTechniqueBetsToDoDateFilter" ng-model="ctrl.nextTechniqueBetsToDoDateFilter" placeholder="yyyy-MM-dd" min="2018-01-01" max="2018-12-31" type="date" value="2018-12-19"> -->
+    </div>
+    <!-- <div>{{ctrl.nextTechniqueBetsToDoBeforeGroup}}</div> -->
+    <!-- <div>
+      <json-formatter json="ctrl.nextTechniqueBetsToDoGroup" open="3"></json-formatter>
+    </div> -->
+    <div>
+      <json-formatter json="ctrl.nextTechniqueBetsToDo" open="2"></json-formatter>
+    </div>
+
+    <!-- <div> -->
+    <!-- <label for="hockeyPredictions">Show hockey predictions:</label> -->
+    <!-- <input id="hockeyPredictions" type="checkbox" ng-model="ctrl.hockeyPredictions" /> -->
+    <!-- <md-switch id="hockeyPredictions" ng-model="ctrl.hockeyPredictions">
+        Show hockey predictions
+      </md-switch> -->
+    <!-- </div> -->
+    <!-- <div> -->
+    <!-- <label for="soccerPredictions">Show soccer predictions:</label> -->
+    <!-- <input id="soccerPredictions" type="checkbox" ng-model="ctrl.soccerPredictions" /> -->
+    <!-- <md-switch id="soccerPredictions" ng-model="ctrl.soccerPredictions">
+        Show soccer predictions
+      </md-switch> -->
+    <!-- </div> -->
+    <!-- <div> -->
+    <!-- <label for="basketBallPredictions">Show basketBall predictions:</label> -->
+    <!-- <input id="basketBallPredictions" type="checkbox" ng-model="ctrl.basketBallPredictions" /> -->
+    <!-- <md-switch id="basketBallPredictions" ng-model="ctrl.basketBallPredictions">
+        Show basketBall predictions
+      </md-switch> -->
+    <!-- </div> -->
+
+    <div ng-cloak>
+      <md-content>
+        <md-tabs md-dynamic-height md-border-bottom>
+          <md-tab label="hockey">
+            <md-content class="md-padding">
+              <h1 class="md-display-2">Hockey</h1>
+              <div>
+                <hockey-league-list></hockey-league-list>
+              </div>
+            </md-content>
+          </md-tab>
+          <md-tab label="soccer">
+            <md-content class="md-padding">
+              <h1 class="md-display-2">Soccer</h1>
+              <div>
+                <soccer-league-list></soccer-league-list>
+              </div>
+            </md-content>
+          </md-tab>
+          <md-tab label="basketBall">
+            <md-content class="md-padding">
+              <h1 class="md-display-2">BasketBall</h1>
+              <basket-ball-league-list></basket-ball-league-list>
+            </md-content>
+          </md-tab>
+        </md-tabs>
+      </md-content>
+    </div>
+
+
+
+
+
+</body>
+
+</html>
