@@ -92,20 +92,33 @@ const getHockeyTeamInfos = async (browser, teamUrl, sport) => {
             let scoreRegex = score.match(/\d+:\d+/ig);
             if (scoreRegex) {
 
+              let firstPeriodScore = '0:0'
+              let secondPeriodScore = '0:0'
+              let thirdPeriodScore = '0:0'
 
               let otScore = scoreRegex[0]
-              let firstPeriodScore = scoreRegex[1]
+              if (scoreRegex[1] !== undefined) {
+                firstPeriodScore = scoreRegex[1]
+              }
               let firstPeriodGoalsRegex = firstPeriodScore.match(/\d+/ig);
+
               let firstPeriodHomeGoals = parseInt(firstPeriodGoalsRegex[0])
               let firstPeriodAwayGoals = parseInt(firstPeriodGoalsRegex[1])
-              let secondPeriodScore = scoreRegex[2]
+
+              if (scoreRegex[2] !== undefined) {
+                secondPeriodScore = scoreRegex[2]
+              }
               let secondPeriodGoalsRegex = secondPeriodScore.match(/\d+/ig);
               let secondPeriodHomeGoals = parseInt(secondPeriodGoalsRegex[0])
               let secondPeriodAwayGoals = parseInt(secondPeriodGoalsRegex[1])
-              let thirdPeriodScore = scoreRegex[3]
+
+              if (scoreRegex[3] !== undefined) {
+                thirdPeriodScore = scoreRegex[3]
+              }
               let thirdPeriodGoalsRegex = thirdPeriodScore.match(/\d+/ig);
               let thirdPeriodHomeGoals = parseInt(thirdPeriodGoalsRegex[0])
               let thirdPeriodAwayGoals = parseInt(thirdPeriodGoalsRegex[1])
+
               let etScore = ''
               let withET = false
               let penScore = ''
@@ -609,7 +622,7 @@ const getSoccerResult = (browser, leagueUrl, iteration_check) => {
               return {
                 team: teamEvents.teamName,
                 nextEvent: teamEvents.nextEvent,
-                lastEvents : lastEvents
+                lastEvents: lastEvents
               }
             })
             resolve({

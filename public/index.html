@@ -66,7 +66,7 @@
   <div class="container">
 
     <div ng-show="data.length > 0">
-      <h3>Table</h3>
+      <h3>Chart</h3>
       <nvd3 options="options" data="data" api="api"></nvd3>
     </div>
 
@@ -170,6 +170,7 @@
     </div>
 
     <div ng-show="data.length > 0">
+      <h3>Table</h3>
       <table ng-table="ctrl.tableParams" class="table" show-filter="true">
         <tr ng-repeat="row in $data" ng-class="{'lost': row.status.indexOf('PERDU') >= 0, 'cashout': row.status.indexOf('CASHOUT') >= 0, 'won': row.status.indexOf('GAGN') >=0}">
           <!--<td title="'Name'" filter="{ name: 'text'}" sortable="'name'">
