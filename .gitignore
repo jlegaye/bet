@@ -6,3 +6,4 @@ npm-debug.log
 package-lock.json
 winamaxCredentials.js
 config.js
+cache.json
