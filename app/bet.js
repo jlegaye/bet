@@ -440,6 +440,7 @@ const getHockeyResult = (browser, leagueUrl, under_check, iteration_check) => {
       })
       .catch(function(err) {
         console.log('getAllTeamsUrl error : ' + err)
+        throw err
       });
   })
 }
@@ -449,8 +450,8 @@ const getHockeyResultV2 = (browser, leagueUrl, under_check, iteration_check) => 
     getAllTeamsUrl(browser, leagueUrl)
       .then(function(results) {
 
-        console.log('getAllTeamsUrl')
-        console.log(results)
+        console.log('getAllTeamsUrl: ', leagueUrl)
+        console.log('URL count: ', results.teams.length)
         let promises = uniqEs6(results.teams).map(url => getHockeyTeamInfos(browser, url, 'hockey'))
 
         Promise.all(promises)
@@ -509,6 +510,7 @@ const getHockeyResultV2 = (browser, leagueUrl, under_check, iteration_check) => 
       })
       .catch(function(err) {
         console.log('getAllTeamsUrl error : ' + err)
+        throw err
       });
   })
 }
@@ -575,6 +577,7 @@ const getBasketBallResult = (browser, leagueUrl, under_check, iteration_check) =
       })
       .catch(function(err) {
         console.log('getAllTeamsUrl error : ' + err)
+        throw err
       });
   })
 }
@@ -637,6 +640,7 @@ const getSoccerResult = (browser, leagueUrl, iteration_check) => {
       })
       .catch(function(err) {
         console.log('getAllTeamsUrl error : ' + err)
+        throw err
       });
   })
 }
@@ -850,7 +854,7 @@ function getSoccerEventsPredictionsByUrl(browser, url, iteration_check) {
 }
 
 async function getAllHockeyResults() {
-  console.log('calling');
+  console.log('calling getAllHockeyResults');
   const browser = await puppeteer.launch(launchOptions);
   var result = await resolveAllHockey(browser);
   await browser.close()
@@ -858,7 +862,7 @@ async function getAllHockeyResults() {
 }
 
 async function getAllBasketBallResults() {
-  console.log('calling');
+  console.log('calling getAllBasketBallResults');
   const browser = await puppeteer.launch(launchOptions);
   var result = await resolveAllBasketBall(browser);
   await browser.close()
@@ -866,7 +870,7 @@ async function getAllBasketBallResults() {
 }
 
 async function getBasketBallEventsPredictions(url, under_check, iteration_check) {
-  console.log('calling');
+  console.log('calling getBasketBallEventsPredictions: ', url);
   const browser = await puppeteer.launch(launchOptions);
   var result = await getBasketBallEventsPredictionsByUrl(browser, url, under_check, iteration_check);
   await browser.close()
@@ -874,7 +878,7 @@ async function getBasketBallEventsPredictions(url, under_check, iteration_check)
 }
 
 async function getHockeyEventsPredictions(url, under_check, iteration_check) {
-  console.log('calling');
+  console.log('calling getHockeyEventsPredictions: ', url);
 
   const browser = await puppeteer.launch(launchOptions);
   var result = await getHockeyEventsPredictionsByUrl(browser, url, under_check, iteration_check);
@@ -883,7 +887,7 @@ async function getHockeyEventsPredictions(url, under_check, iteration_check) {
 }
 
 async function getSoccerEventsPredictions(url, iteration_check) {
-  console.log('calling');
+  console.log('calling getSoccerEventsPredictions: ', url);
   const browser = await puppeteer.launch(launchOptions);
   var result = await getSoccerEventsPredictionsByUrl(browser, url, iteration_check);
   await browser.close()

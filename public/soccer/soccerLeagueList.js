@@ -97,7 +97,8 @@
           event.league = pred.league
           let parts = event.nextEvent.date.split('.');
           let mydate = new Date(parts[2], parts[1] - 1, parts[0]);
-          event.nextEvent.date = mydate.toDateString()
+          event.nextEvent.date = mydate
+          event.nextEvent.dateString = mydate.toDateString()
           event.nextEvent.dateTime = mydate.getTime()
           return event
         })
@@ -151,10 +152,13 @@
 
             res.events = res.events.map(event => {
               let eventTeam = event.team
-              let nextTechniqueBetsToDo = $scope.$parent.ctrl.nextTechniqueBetsToDo.soccerEvents
-              let matchingTechKey = Object.keys(nextTechniqueBetsToDo).find(nextTech => nextTech.includes(eventTeam))
-              if(matchingTechKey !== undefined){
-                event.lostStakes = nextTechniqueBetsToDo[matchingTechKey].lostStakes
+              if ($scope.$parent.ctrl.nextTechniqueBetsToDo !== undefined) {
+                let nextTechniqueBetsToDo = $scope.$parent.ctrl.nextTechniqueBetsToDo.soccerEvents
+                let matchingTechKey = Object.keys(nextTechniqueBetsToDo).find(nextTech => nextTech.includes(eventTeam))
+                if (matchingTechKey !== undefined) {
+                  event.lostStakes = nextTechniqueBetsToDo[matchingTechKey].lostStakes
+                  event.lostBets = nextTechniqueBetsToDo[matchingTechKey].lostBets
+                }
               }
               return event
 

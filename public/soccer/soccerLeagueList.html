@@ -30,9 +30,15 @@
                 <li ng-repeat="event in league.events" ng-class="{'notBetYet' : !event.alreadyBet, 'alreadyBet': event.alreadyBet}">
                   <h3>{{event.team}}</h3>
                   <br>
-                  <span>Date : {{event.nextEvent.date}}</span>
+                  <span>Date : {{event.nextEvent.date}}<!--<md-datepicker ng-model="event.nextEvent.date" disabled></md-datepicker>--></span>
                   <br ng-show="event.lostStakes !== undefined">
-                  <span ng-show="event.lostStakes !== undefined"><b>lostStakes : {{event.lostStakes}}</b></span>
+                  <span ng-show="event.lostStakes !== undefined"><b>lostStakes : {{event.lostStakes}} €</b></span>
+                  <br>
+                  <ul ng-show="event.lostBets !== undefined">
+                    <li ng-repeat="lostBet in event.lostBets">
+                      <p>Mise: {{lostBet.mise}} € || Odds: {{lostBet.odds}} || {{lostBet.events[0].eventName}} || {{lostBet.events[0].betDesc}} || {{lostBet.events[0].eventResult}}</p>
+                    </li>
+                  </ul>
                   <br>
                   <span>{{event.nextEvent.home}} VS {{event.nextEvent.away}}</span>
                   <br>
@@ -54,19 +60,26 @@
             <h1>{{$ctrl.getAllAlreadyBetSoccerPredictionsCount()}} / {{$ctrl.getAllSoccerPredictionsCount()}}</h1>
           </div>
           <ul ng-repeat="(key, value) in $ctrl.allSoccerPredictions2 | groupBy: 'nextEvent.date'">
-            <h1>{{ key }}</h1>
+            <h1>
+              <md-datepicker ng-model="value[0].nextEvent.date" disabled></md-datepicker>
+            </h1>
             <li ng-repeat="event in value" ng-class="{'notBetYet' : !event.alreadyBet, 'alreadyBet': event.alreadyBet}">
               <h2>{{event.league}}</h2>
               <br>
               <h3>{{event.team}}</h3>
               <br ng-show="event.lostStakes !== undefined">
-              <span ng-show="event.lostStakes !== undefined"><b>lostStakes : {{event.lostStakes}}</b></span>
+              <span ng-show="event.lostStakes !== undefined"><b>lostStakes : {{event.lostStakes}} €</b></span>
+              <ul ng-show="event.lostBets !== undefined">
+                <li ng-repeat="lostBet in event.lostBets">
+                  <p>Mise: {{lostBet.mise}} € || Odds: {{lostBet.odds}} || {{lostBet.events[0].eventName}} || {{lostBet.events[0].betDesc}} || {{lostBet.events[0].eventResult}}</p>
+                </li>
+              </ul>
               <br>
               <span>{{event.nextEvent.home}} VS {{event.nextEvent.away}}</span>
               <br>
               <ul>
                 <li ng-repeat="lastEvent in event.lastEvents">
-                  <span>{{lastEvent.date}} {{lastEvent.home}} VS {{lastEvent.away}} || {{lastEvent.score}}</span>
+                  <span>{{lastEvent.date}} || {{lastEvent.home}} VS {{lastEvent.away}} || {{lastEvent.score}}</span>
                 </li>
               </ul>
             </li>

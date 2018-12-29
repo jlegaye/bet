@@ -48,7 +48,7 @@ let mappingJson = [{
   "leagueName": "EBEL 2018/2019"
 }, {
   "teamName": "CSKA Moscow",
-  "winamaxTeamName": "CSKA Moscow",
+  "winamaxTeamName": "CSKA Moscou",
   "leagueName": "KHL 2018/2019"
 }, {
   "teamName": "SKA St. Petersburg",
@@ -532,7 +532,7 @@ let mappingJson = [{
   "leagueName": "SHL 2018/2019"
 }, {
   "teamName": "HV 71",
-  "winamaxTeamName": "HV 71",
+  "winamaxTeamName": "Hv71",
   "leagueName": "SHL 2018/2019"
 }, {
   "teamName": "Timra",
