@@ -38,10 +38,6 @@ module.exports = function(app) {
 */
   app.get('/api/winamaxBets', function(req, res) {
 
-
-
-
-
     getAllWinamaxBets()
       .then((result) => {
         // console.log('result: ', result)
@@ -80,7 +76,7 @@ module.exports = function(app) {
         // res.json(uniqueConcatWithCache)
         // res.json(uniqueNewPages)
       })
-      .catch((err) => console.log(err))
+      .catch(e => console.error('Error during getAllWinamaxBets: ', e))
 
   });
 
