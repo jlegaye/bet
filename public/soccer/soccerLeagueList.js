@@ -185,7 +185,7 @@
     }
 
     ctrl.copySelectedToClipboard = function() {
-      let selectedEvents = ctrl.allHockeyPredictions2.filter(event => event.selected)
+      let selectedEvents = ctrl.allSoccerPredictions2.filter(event => event.selected)
       let selectedEventsStr = JSON.stringify(selectedEvents, undefined, 2)
       const el = document.createElement('textarea');
       el.value = selectedEventsStr;
