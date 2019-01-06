@@ -72,10 +72,6 @@
 
     <div ng-show="data.length > 0">
       <h3>Filters</h3>
-      <md-input-container class="md-block" flex-gt-sm>
-        <label>Event name</label>
-        <input ng-model="ctrl.eventNameFilter">
-      </md-input-container>
       <md-list ng-cloak>
         <md-subheader class="md-no-sticky">Bet status</md-subheader>
         <md-list-item ng-repeat="bStatus in ctrl.betStatus">
@@ -108,6 +104,10 @@
           <md-checkbox class="md-secondary" ng-model="bTechnique.model"></md-checkbox>
         </md-list-item>
       </md-list>
+      <md-input-container class="md-block" flex-gt-sm>
+        <label>Event name</label>
+        <input ng-model="ctrl.eventNameFilter">
+      </md-input-container>
     </div>
 
     <div ng-show="data.length > 0">
