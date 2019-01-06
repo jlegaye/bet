@@ -564,7 +564,7 @@ let mappingJson = [{
   "leagueName": "Get-ligaen 2018/2019"
 }, {
   "teamName": "Sparta Sarpsborg",
-  "winamaxTeamName": "Sparta Sarpsborg",
+  "winamaxTeamName": "Sarpsborg",
   "leagueName": "Get-ligaen 2018/2019"
 }, {
   "teamName": "Frisk Asker",

@@ -6,9 +6,6 @@
     <input type="number" ng-model="$ctrl.hockeyPredictionsIteration">
   </md-input-container>
 </div>
-<!-- <div>{{$ctrl.allHockeyPredictions}}</div> -->
-<!-- <div>{{ctrl.result}}</div> -->
-<!-- <hockey-league-detail ng-repeat="league in $ctrl.list" league="league"></hockey-league-detail> -->
 <div ng-show="$ctrl.isLoading">
   <md-progress-circular md-mode="indeterminate"></md-progress-circular>
 </div>
@@ -21,36 +18,46 @@
           <div>
             <h1>{{$ctrl.getAllAlreadyBetHockeyPredictionsCount()}} / {{$ctrl.getAllHockeyPredictionsCount()}}</h1>
           </div>
-          <md-list flex>
-            <md-list-item class="md-3-line" ng-repeat="league in $ctrl.allHockeyPredictions" ng-click="null">
-              <div class="md-list-item-text" layout="column">
-                <h3>{{ league.league }}</h3>
-                <p ng-show="league.events.length == 0">NO RESULT FOUND</p>
-                <div ng-show="league.events.length > 0">
-                  <md-list-item class="md-3-line" ng-repeat="event in league.events" ng-class="{'notBetYet' : !event.alreadyBet, 'alreadyBet': event.alreadyBet}">
-                    <div class="md-list-item-text" layout="column">
-                      <br>
-                      <h2>{{event.team}}</h2>
-                      <p>totalGoals average: {{event.totalGoalsAverage}}</p>
-                      <p ng-show="event.lostStakes !== undefined"><b>lostStakes : {{event.lostStakes}} €</b></p>
-                      <ul ng-show="event.lostBets !== undefined">
-                        <li ng-repeat="lostBet in event.lostBets">
-                          <p>Mise: {{lostBet.mise}} € || Odds: {{lostBet.odds}} || {{lostBet.events[0].eventName}} || {{lostBet.events[0].betDesc}} || {{lostBet.events[0].eventResult}}</p>
-                        </li>
-                      </ul>
-                      <p>Date : {{event.nextEvent.date}}</p>
-                      <h3>{{event.nextEvent.home}} VS {{event.nextEvent.away}}</h3>
-                      <ul>
-                        <li ng-repeat="lastEvent in event.lastEvents">
-                          <p>{{lastEvent.date}} {{lastEvent.home}} VS {{lastEvent.away}} || {{lastEvent.score}}</p>
-                        </li>
-                      </ul>
-                    </div>
-                  </md-list-item>
-                </div>
-              </div>
-            </md-list-item>
-          </md-list>
+          <!-- <div>{{$ctrl.allHockeyPredictions | json}}</div> -->
+          <div ng-repeat="league in $ctrl.allHockeyPredictions">
+            <div>
+              <h3>{{ league.league }}</h3>
+              <p ng-show="league.events.length == 0">NO RESULT FOUND</p>
+              <md-list ng-show="league.events.length > 0" flex>
+                <md-list-item class="md-3-line" ng-repeat="event in league.events" ng-class="{'notBetYet' : !event.alreadyBet, 'alreadyBet': event.alreadyBet}">
+                  <div class="md-list-item-text" layout="column">
+                    <br>
+                    <h2>
+                      <span>{{event.team}}</span>
+                      <span>
+                        <md-button class="md-icon-button" aria-label="Copy" ng-click="$ctrl.copyToClipboard(event.team)">
+                          <md-icon md-svg-icon="img/icons/copy.svg"></md-icon>
+                        </md-button>
+                      </span>
+                    </h2>
+
+                    <p>totalGoals average: {{event.totalGoalsAverage}}</p>
+                    <p ng-show="event.lostStakes !== undefined"><b>lostStakes : {{event.lostStakes}} €</b></p>
+                    <ul ng-show="event.lostBets !== undefined">
+                      <li ng-repeat="lostBet in event.lostBets">
+                        <p>Mise: {{lostBet.mise}} € || Odds: {{lostBet.odds}} || {{lostBet.events[0].eventName}} || {{lostBet.events[0].betDesc}} || {{lostBet.events[0].eventResult}}</p>
+                      </li>
+                    </ul>
+                    <p>Date : {{event.nextEvent.date}}</p>
+                    <h3>{{event.nextEvent.home}} VS {{event.nextEvent.away}}</h3>
+                    <ul>
+                      <li ng-repeat="lastEvent in event.lastEvents">
+                        <p>{{lastEvent.date}} {{lastEvent.home}} VS {{lastEvent.away}} || {{lastEvent.score}}</p>
+                      </li>
+                    </ul>
+                    <!-- <md-checkbox class="md-secondary" ng-model="event.selected"></md-checkbox> -->
+                    <md-divider ng-if="!$last"></md-divider>
+                  </div>
+                </md-list-item>
+              </md-list>
+              <md-divider ng-if="!$last"></md-divider>
+            </div>
+          </div>
         </md-content>
       </md-tab>
       <md-tab label="By date">
@@ -59,14 +66,26 @@
           <div>
             <h1>{{$ctrl.getAllAlreadyBetHockeyPredictionsCount()}} / {{$ctrl.getAllHockeyPredictionsCount()}}</h1>
           </div>
+          <div>
+            <md-button class="md-icon-button" aria-label="Copy" ng-click="$ctrl.copySelectedToClipboard()">
+              <md-icon md-svg-icon="img/icons/copy.svg"></md-icon>
+            </md-button>
+          </div>
           <md-list ng-repeat="(key, value) in $ctrl.allHockeyPredictions2 | groupBy: 'nextEvent.dateTime'" flex>
             <h1>
               <md-datepicker ng-model="value[0].nextEvent.date" disabled></md-datepicker>
             </h1>
-            <md-list-item class="md-3-line" ng-repeat="event in value" ng-class="{'notBetYet' : !event.alreadyBet, 'alreadyBet': event.alreadyBet}" ng-click="null">
+            <md-list-item class="md-3-line" ng-repeat="event in value" ng-class="{'notBetYet' : !event.alreadyBet, 'alreadyBet': event.alreadyBet}">
               <div class="md-list-item-text" layout="column">
                 <h3>{{ event.league }}</h3>
-                <h2>{{event.team}}</h2>
+                <h2>
+                  <span>{{event.team}}</span>
+                  <span>
+                    <md-button class="md-icon-button" aria-label="Copy" ng-click="$ctrl.copyToClipboard(event.team)">
+                      <md-icon md-svg-icon="img/icons/copy.svg"></md-icon>
+                    </md-button>
+                  </span>
+                </h2>
                 <p>totalGoals average: {{event.totalGoalsAverage}}</p>
                 <p ng-show="event.lostStakes !== undefined"><b>lostStakes : {{event.lostStakes}} €</b></p>
                 <ul ng-show="event.lostBets !== undefined">
@@ -81,28 +100,10 @@
                   </li>
                 </ul>
               </div>
+              <md-checkbox class="md-secondary" ng-model="event.selected"></md-checkbox>
+              <md-divider ng-if="!$last"></md-divider>
             </md-list-item>
           </md-list>
-          <!-- <ul ng-repeat="(key, value) in $ctrl.allHockeyPredictions2 | groupBy: 'nextEvent.date'">
-            <h1>{{ key }}</h1>
-            <li ng-repeat="event in value" ng-class="{'notBetYet' : !event.alreadyBet, 'alreadyBet': event.alreadyBet}">
-              <h2>{{event.league}}</h2>
-              <br>
-              <h3>{{event.team}}</h3>
-              <br ng-show="event.lostStakes !== undefined">
-              <span ng-show="event.lostStakes !== undefined"><b>lostStakes : {{event.lostStakes}}</b></span>
-              <br>
-              <span>totalGoals average: {{event.totalGoalsAverage}}</span>
-              <br>
-              <span>{{event.nextEvent.home}} VS {{event.nextEvent.away}}</span>
-              <br>
-              <ul>
-                <li ng-repeat="lastEvent in event.lastEvents">
-                  <span>{{lastEvent.date}} {{lastEvent.home}} VS {{lastEvent.away}} || {{lastEvent.score}}</span>
-                </li>
-              </ul>
-            </li>
-          </ul> -->
         </md-content>
       </md-tab>
     </md-tabs>

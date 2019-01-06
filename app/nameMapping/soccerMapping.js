@@ -200,7 +200,7 @@ let mappingJson = [{
   "leagueName": "Premier League 2018/2019"
 }, {
   "teamName": "Wolves",
-  "winamaxTeamName": "Wolves",
+  "winamaxTeamName": "Wolverhampton",
   "leagueName": "Premier League 2018/2019"
 }, {
   "teamName": "Brighton",
