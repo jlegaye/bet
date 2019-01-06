@@ -69,6 +69,11 @@
           <div>
             <h1>{{$ctrl.getAllAlreadyBetSoccerPredictionsCount()}} / {{$ctrl.getAllSoccerPredictionsCount()}}</h1>
           </div>
+          <div>
+            <md-button class="md-icon-button" aria-label="Copy" ng-click="$ctrl.copySelectedToClipboard()">
+              <md-icon md-svg-icon="img/icons/copy.svg"></md-icon>
+            </md-button>
+          </div>
           <md-list ng-repeat="(key, value) in $ctrl.allSoccerPredictions2 | groupBy: 'nextEvent.date'" flex>
             <h1>
               <md-datepicker ng-model="value[0].nextEvent.date" disabled></md-datepicker>
